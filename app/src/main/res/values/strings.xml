@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">TestByLifeHack</string>
+    <string name="please_wait">Пожалуйста подождите....</string>
+    <string name="loading_data">Загрузка данных</string>
+    <string name="error_occured">Ошибка</string>
+    <string name="falien_connect">Ошибка соединенеия с сервером</string>
+    <string name="coordinates">Координаты:</string>
+    <string name="telephone">Телефон:</string>
+    <string name="site">Сайт:</string>
+
+</resources>
