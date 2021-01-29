@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity(), CompanyAdapter.OnBtnClickListener {
         setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar!!.setSubtitle(getString(R.string.company))
 
     }
 

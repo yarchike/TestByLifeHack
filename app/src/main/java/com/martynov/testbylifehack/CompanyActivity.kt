@@ -28,6 +28,7 @@ class CompanyActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_company)
         binding = ActivityCompanyBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar!!.setSubtitle(getString(R.string.about_company))
         binding.textCoordinatesCompany.setOnClickListener(this@CompanyActivity)
         binding.textTelephoneCompany.setOnClickListener(this@CompanyActivity)
         binding.textSiteCompany.setOnClickListener(this@CompanyActivity)
@@ -58,8 +59,8 @@ class CompanyActivity : AppCompatActivity(), View.OnClickListener {
                     company?.url?.let { loadImage(binding.imageView, it) }
                     val coordinator = "${company?.lat} : ${company?.lon}"
                     binding.textCoordinatesCompany.text = coordinator
-                    binding.textSiteCompany.text = company?.www
-                    binding.textTelephoneCompany.text = company?.phone
+                    binding.textSiteCompany.text = company?.www.toString()
+                    binding.textTelephoneCompany.text = company?.phone.toString()
                 }
             } catch (e: IOException) {
 
@@ -82,14 +83,29 @@ class CompanyActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.textCoordinatesCompany -> {
-                toast("${company?.lat} : ${company?.lon}")
+                val coordinat = "${company?.lat},${company?.lon}"
+                if(company?.lat != 0.0 || company?.lon != 0.0){
+                    intent = Intent(Intent.ACTION_VIEW)
+                    intent.setData(Uri.parse("geo:$coordinat"))
+                    startActivity(intent)
+                }else{
+                    toast(getString(R.string.no_coordinates))
+                }
+
             }
             R.id.textTelephoneCompany -> {
-                toast("${company?.phone}")
+                if(company?.phone?.let { isValidPhoneNumber(it) } == true){
+                    intent = Intent(Intent.ACTION_DIAL)
+                    intent.setData(Uri.parse("tel:${company?.phone}"))
+                    startActivity(intent)
+                }else{
+                    toast(getString(R.string.invalid_number))
+                }
             }
             R.id.textSiteCompany -> {
                 if(company?.www?.let { isValidUrl(it) } == true){
-                    intent = Intent(Intent.ACTION_VIEW, Uri.parse(company?.www))
+                    intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://${company?.www}"))
+                    Log.d("My", intent.toString())
                     startActivity(intent)
                 }else{
                    toast(getString(R.string.not_a_valid_link))

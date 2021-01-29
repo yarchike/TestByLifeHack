@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TestByLifeHack</string>
+    <string name="app_name">Тестовое задание</string>
     <string name="please_wait">Пожалуйста подождите....</string>
     <string name="loading_data">Загрузка данных</string>
     <string name="error_occured">Ошибка</string>
@@ -8,5 +8,9 @@
     <string name="telephone">Телефон:</string>
     <string name="site">Сайт:</string>
     <string name="not_a_valid_link">Не действительная ссылка</string>
+    <string name="invalid_number">Не корректный номер</string>
+    <string name="no_coordinates">Нету координат</string>
+    <string name="company">Компании</string>
+    <string name="about_company">О компании</string>
 
 </resources>
