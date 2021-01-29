@@ -1,27 +1,36 @@
 package com.martynov.testbylifehack
 
 import android.app.ProgressDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.martynov.testbylifehack.databinding.ActivityCompanyBinding
-import com.martynov.testbylifehack.databinding.ActivityMainBinding
+import com.martynov.testbylifehack.model.CompanyModel
 import kotlinx.coroutines.launch
+import splitties.toast.toast
 import java.io.IOException
 
-class CompanyActivity : AppCompatActivity() {
+
+class CompanyActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityCompanyBinding
     private var dialog: ProgressDialog? = null
+    var company: CompanyModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_company)
         binding = ActivityCompanyBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.textCoordinatesCompany.setOnClickListener(this@CompanyActivity)
+        binding.textTelephoneCompany.setOnClickListener(this@CompanyActivity)
+        binding.textSiteCompany.setOnClickListener(this@CompanyActivity)
 
 
     }
@@ -41,13 +50,13 @@ class CompanyActivity : AppCompatActivity() {
                 val result = id?.let { App.repository.getCompayById(it) }
                 dialog?.dismiss()
                 if (result?.isSuccessful == true) {
-                    val company = result.body()?.get(0)
+                    company = result.body()?.get(0)
                     Log.d("My", company.toString())
                     binding.textNameCompany.text = company?.name
                     binding.textDescriptionCompany.text = company?.description
                     binding.imageView
                     company?.url?.let { loadImage(binding.imageView, it) }
-                    val coordinator = "${company?.lat} : ${company?.lan}"
+                    val coordinator = "${company?.lat} : ${company?.lon}"
                     binding.textCoordinatesCompany.text = coordinator
                     binding.textSiteCompany.text = company?.www
                     binding.textTelephoneCompany.text = company?.phone
@@ -68,5 +77,25 @@ class CompanyActivity : AppCompatActivity() {
                 .applyDefaultRequestOptions(requestOptions)
                 .load(imageUrl)
                 .into(photoImg)
+    }
+
+    override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.textCoordinatesCompany -> {
+                toast("${company?.lat} : ${company?.lon}")
+            }
+            R.id.textTelephoneCompany -> {
+                toast("${company?.phone}")
+            }
+            R.id.textSiteCompany -> {
+                if(company?.www?.let { isValidUrl(it) } == true){
+                    intent = Intent(Intent.ACTION_VIEW, Uri.parse(company?.www))
+                    startActivity(intent)
+                }else{
+                   toast(getString(R.string.not_a_valid_link))
+                }
+            }
+
+        }
     }
 }

@@ -8,7 +8,7 @@ data class CompanyModel (
     val img: String,
     val description: String,
     val lat: Double,
-    val lan: Double,
+    val lon: Double,
     val www: String,
     val phone: String
         ){

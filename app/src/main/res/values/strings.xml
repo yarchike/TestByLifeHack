@@ -7,5 +7,6 @@
     <string name="coordinates">Координаты:</string>
     <string name="telephone">Телефон:</string>
     <string name="site">Сайт:</string>
+    <string name="not_a_valid_link">Не действительная ссылка</string>
 
 </resources>
